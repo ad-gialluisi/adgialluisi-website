@@ -1,0 +1,49 @@
+body {
+    background-color: #26B1CD;
+}
+
+#header {
+    background-color: #008DB8;
+    border: 1px solid black;
+    border-radius: 30px;
+    box-shadow: 5px 5px 15px black;
+}
+
+#header img {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 20px;
+}
+
+#header h1 {
+    display: inline-block;
+    color: #C4F1FF;
+    text-shadow: 5px 5px 5px black;
+}
+
+#header h1::selection {
+    background-color: #B88800;
+    color: white;
+}
+
+.content {
+    background-color: #008DB8;
+    border: 1px solid black;
+    border-radius: 30px;
+    box-shadow: 5px 5px 15px black;
+    padding: 10px 20px 10px 20px;
+    margin-top: 40px;
+}
+
+.content div {
+    color: black;
+    background-color: #C4F1FF;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.content div *::selection {
+    background-color: #F1FFC4;
+    color: black;
+}
