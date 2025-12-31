@@ -25,9 +25,9 @@ function isStyleSheetEnabled(styleSheet) {
 
 function collectStyleSheets() {
     styles_structure = document.styleSheets[0];
-    styles_default = document.styleSheets[1];
-    styles_old = document.styleSheets[2];
-    styles_dark = document.styleSheets[3];
+    styles_default = document.styleSheets[2];
+    styles_old = document.styleSheets[3];
+    styles_dark = document.styleSheets[4];
 }
 
 function setTheme(v) {

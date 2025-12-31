@@ -29,6 +29,10 @@ pre {
     white-space: pre-wrap;
 }
 
+.clearboth {
+    clear: both;
+}
+
 
 
 
