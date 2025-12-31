@@ -1,0 +1,56 @@
+body {
+    background-color: #B9D2D4;
+    color: #4B787C;
+}
+
+#title {
+    text-shadow: 2px 2px 2px #2F4B4E;
+}
+
+
+a.menubtn {
+    color: #4B787C;
+    text-shadow: 1px 1px 1px #2F4B4E;
+}
+
+a.menubtn:hover {
+    color: #A7846D;
+    text-shadow: 1px 1px 1px #2F4B4E;
+}
+
+a.menubtn:active {
+    color: #684F3F;
+    text-shadow: 1px 1px 1px #2F4B4E;
+}
+
+
+
+.cont-coll {
+    background-color: #F2F7F7;
+}
+
+.content {
+    color: #244244;
+}
+
+
+
+#footer {
+    color: #244244;
+    text-shadow: 0.6px 0.6px 0px #2F4B4E;
+}
+
+#footer-container > a {
+    color: #4B787C;
+    text-shadow: 1px 1px 1px #2F4B4E;
+}
+
+#footer-container > a:hover {
+    color: #A7846D;
+    text-shadow: 1px 1px 1px #2F4B4E;
+}
+
+#footer-container > a:active {
+    color: #684F3F;
+    text-shadow: 1px 1px 1px #2F4B4E;
+}

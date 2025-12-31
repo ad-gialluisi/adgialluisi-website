@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8"/>
+
+
+        <meta property="og:title" content="Le attività di Antonio Daniele"/>
+        <meta property="og:image" content="//assets/images/icona-antoniodaniele-attivita.png"/>
+        <meta property="og:description" content="Le attività di Antonio Daniele"/>
+        <meta property="og:url" content="//university/dbdesign/relalgebra-selfjoin-subtraction-usage.html"/>
+        <link rel="icon" type="image/x-icon" sizes="32x32" href="../../assets/images/favicon.ico">
+        <link rel="shortcut icon" href="../../assets/images/favicon.ico" type="image/x-icon">
+
+
+        <title>Le attività di Antonio Daniele - Self-join and subtraction in Relational Algebra</title>
+        <link rel="stylesheet" href="../../assets/css/structure.css"/>
+        <link rel="stylesheet" href="../../assets/css/default-theme.css" title="Default theme" />
+        <link rel="alternate stylesheet" href="../../assets/css/old-theme.css" title="Old theme"/>
+        <link rel="alternate stylesheet" href="../../assets/css/dark-theme.css" title="Dark theme"/>
+
+        <script src="../../assets/js/utils-logic.js"></script>
+        <script src="../../assets/js/theme-logic.js"></script>
+        <script src="../../assets/js/multilang-logic.js"></script>
+        <script src="../../assets/js/entrypoint-logic.js"></script>
+    </head>
+    <body>
+
+    <div id="header">
+        <div id="headerpextra">
+        <h1 id="title">Le attività di Antonio Daniele</h1>
+
+        
+
+<ul id="extra-options">
+     <li><a href="javascript:;" id="lang-button">
+          <img alt="Italian flag" class="cont-lang-en" src="../../assets/images/italy-flag.png"/>
+          <img alt="Union jack flag" class="cont-lang-it" src="../../assets/images/uk-flag.png"/>
+     </a></li>
+     <li><a href="javascript:;" id="theme-button">&nbsp;</a></li>
+</ul>
+        <div style="clear: both"></div>
+        </div>
+
+        <ul id="menubar">
+            </li>
+<li><a href="../../index.html" class="menubtn">HOME</a>
+</li>
+<li><a href="../../about.html" class="menubtn">About</a>
+</li>
+<li><a href="../../projects.html" class="menubtn">Projects</a>
+</li>
+<li><a href="../../university.html" class="menubtn">University</a>
+</li>
+<li><a href="../../sitemap.html" class="menubtn">Sitemap</a>
+        </ul>
+    </div>
+
+    <div class="cont-coll">
+         <div id="breadcrumb-bar">
+         <span id="breadcrumb-bar-back"><a href="../dbdesign.html">..</a></span>
+<span id="breadcrumb-bar-path"><a href="../../index.html"><span class="cont-lang-en">HOME</span><span class="lang-separator"> - </span><span class="cont-lang-it">Indice</span></a>/<a href="../../university.html"><span class="cont-lang-en">University</span><span class="lang-separator"> - </span><span class="cont-lang-it">Università</span></a>/<a href="../dbdesign.html"><span class="cont-lang-en">Databases</span><span class="lang-separator"> - </span><span class="cont-lang-it">Basi di dati</span></a>/<a href="relalgebra-selfjoin-subtraction-usage.html"><span class="cont-lang-en">Self-join and subtraction in Relational Algebra</span><span class="lang-separator"> - </span><span class="cont-lang-it">Self-join e sottrazione nell'Algebra relazionale</span></a></span>
+<div style="clear: both"></div>
+         </div>
+
+         <div class="content">
+         <div class="cont-lang-en">
+<h4 class="lang-label">English</h4>
+<h3 class="content-title">Relational Algebra: self-join + set
+subtraction</h3>
+<p>In Relational Algebra exercises, it may happen that is asked
+something like “detect the minimum/maximum of the values for a table
+attribute”, or something of different nature, but that may be traced
+back to these.<br />
+The solution in these cases is using a “self-join” followed by a “set
+difference”.<br />
+This document will explain what’s the logical reasoning that justify the
+usage of these two operations.</p>
+<p>It is took for granted that the reader knows Relational Algebra
+well.<br />
+Consider the following example table <code>T</code>, defined as
+<code>T(A)</code>, with tuples:</p>
+<pre><code>+===+
+| A |
++===+
+| 1 |
+| 2 |
+| 3 |
+| 4 |
++---+</code></pre>
+<p>The request is: “Find the minimum value for A in
+<code>T</code>”.<br />
+A quick glance suggests that the value of interest is 1, but how to get
+to the result with Relational Algebra?</p>
+<p>To solve this kind of problem, one must imagine the values for A, as
+if they were a set <code>S = {1, 2, 3, 4}</code>, and then, consider its
+cartesian product <code>SxS</code>:</p>
+<pre><code>SxS = {
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (2, 1),
+    (2, 2),
+    (2, 3),
+    (2, 4),
+    (3, 1),
+    (3, 2),
+    (3, 3),
+    (3, 4),
+    (4, 1),
+    (4, 2),
+    (4, 3),
+    (4, 4)
+}</code></pre>
+<p>Now, imagine to filter these pairs in respect to the condition
+<code>LT &gt; RT</code> (left term &gt; right term); The result of said
+filtering is the following relation <code>R_&gt;</code>:</p>
+<pre><code>R_&gt; = {
+    (2, 1),
+    (3, 1),
+    (3, 2),
+    (4, 1),
+    (4, 2),
+    (4, 3),
+}</code></pre>
+<p>Paying attention to the <code>LT</code>s of <code>R_&gt;</code>, one
+may notice there’s no pair for which <code>LT = 1</code>.<br />
+The <em>value of interest</em> is missing, but that’s the point, thanks
+to this, the set difference can finally be used.<br />
+Let <code>K = {2, 3, 4}</code>, that is, the set of <code>LT</code>s in
+<code>R_&gt;</code>; All that is left, is to subtract <code>K</code>
+from <code>S</code>:</p>
+<pre><code>S - K = {1, 2, 3, 4} - {2, 3, 4} = {1}</code></pre>
+<p>Wow, the minimum has been found!</p>
+<p>In Relational Algebra, this is translated as self-join (=theta join
+of <code>T</code> with a renamed copy of it) of <code>T</code>,
+subtracted (set difference) from <code>T</code> itself.<br />
+Ti solve the quesit, it is sufficient to use the following
+operations:</p>
+<pre><code>K := π_{A}(T ⋈_{A &gt; A&#39;} ρ_{A&#39;/A}(T));
+r :=  T - K</code></pre>
+<p>Please note that the notation <code>_{...}</code> indicates the
+subscript of an operator (the contents being in braces).<br />
+For example, the operation <code>ρ_{A'/A}(T)</code> is read as “rename
+the attribute A for table T as A’”, “A’/A” is in the subscript of
+<code>ρ</code> and <code>T</code> is in round brackets.</p>
+<p>Here <code>r</code> is the wanted result.<br />
+When there is an order among values (the so-called “order relation”), a
+self-join with a condition like <code>LT op RT</code>, followed by a set
+subtraction, is usually sufficient to solve this particular class of
+problems.<br />
+The comparison operator <code>op</code> depends strictly on the results
+one wants to get.</p>
+<p>Self-join is thus, the relational equivalent of comparing all the
+possible values of set <code>S</code> among themselves; It’s obvious
+that if the greater values are asked, THERE WILL NEVER BE the minimum in
+<code>LT</code>, bacause it is the only value which IS NOT GREATER than
+the others; In the same manner, if the lower values are asked, THERE
+WILL NEVER BE the maximum in <code>LT</code>, because it IS NOT LOWER
+than the others.</p>
+<p>This helps in understanding why one needs the self-join first and
+then the subtraction: Self-join’s purpose is to accumulate <em>useless
+values</em> as <code>LT</code>s, so that later, it will be possible to
+subtract them from the <em>table that serves as a whole</em>, in order
+to get the <em>values of interest</em> as result.</p>
+<p>In case of minimum/maximum detection, the reasoning can be summarized
+in:</p>
+<ul>
+<li>To detect the minimum, first self-join with condition
+<code>LT &gt; RT</code>, then, subtract the result from the set of
+<code>LT</code>s;</li>
+<li>To detect the maximum, first self-join with condition
+<code>LT &lt; RT</code>, then, subtract the result from the set of
+<code>LT</code>s;</li>
+</ul>
+<h4>More complex problem solvable with self-join + subtraction</h4>
+<p>Here follows the discussion of a more complex problem, which can be
+traced back to the previous solving reasoning.<br />
+Suppose the database has the following tables with constraints:</p>
+<pre><code>Organization(ID, Name);
+Person(ID, Name, Gender);
+Employee(IDOrganization, IDPerson);
+
+ID is primary key for Organization;
+ID is primary key for Person;
+Attributes tuple (IDOrganization, IDPerson) is primary key for Employee;
+IDPerson references Person(ID);
+IDOrganization references Organization(ID);</code></pre>
+<p>It is asked to “Return the organizations that exclusively employ
+women”.<br />
+This means that all organizations that employ a mixed workforce, must be
+excluded.<br />
+Despite it not being a minimum/maximum problem, the reasoning is the
+same: At first, a self-join is needed, in order to get the set of
+organizations that have a mixed workforce (that is, the <em>useless
+tuples</em>).<br />
+To do this, one can make the view <code>v_1</code>, defined as:</p>
+<pre><code>v_1 = π_{IDOrganization, Gender}(Employee ⋈_{IDPerson = ID} Person);</code></pre>
+<p>This view collects the organization IDs and the gender of the
+employees in a single table.<br />
+Now it’s time for the self-join: The employees (in actuality, only their
+genders) belonging to the same organization, must be combined with each
+other, in order to find the tuples, in which the two employees have
+opposite genders.<br />
+This works because, when an employee is combined with the colleagues,
+and all of them have the same gender, it is guaranteed that there won’t
+be tuples where the first employee is of the opposite gender to the
+second one.</p>
+<p>To get this result, a self-join of <code>v_1</code> is needed:</p>
+<pre><code>v_2 = π_{IDOrganization}(v_1 ⋈_{Gender ≠ Gender&#39; ^ IDOrganization = IDOrganization&#39;} ρ_{IDOrganization&#39;,Gender&#39;/IDOrganization,Gender}(v_1))</code></pre>
+<p><code>v_2</code> collects the organizations (IDs) that employ both
+genders, that is, the <em>useless tuples</em>.<br />
+It’s now time to subtract <code>v_2</code> from <code>v_1</code>, in
+order to get <code>v_3</code>, that is, a view containing all the
+organizations (IDs) which exclusively employ men or women, not both:</p>
+<pre><code>v_3 = π_{IDOrganization}(v_1) - v_2</code></pre>
+<p>It’s not over yet, it was asked to return the organizations (IDs)
+that exclusively employ women.<br />
+To overcome the obstacle, it sufficient to use a theta-join between
+<code>v_3</code> and <code>v_1</code>, in order to exclude male
+employees.<br />
+The final operation is, thus, the following:</p>
+<pre><code>r = π_{IDOrganization}(v_3 ⋈ {Gender ≠ &#39;M&#39; ^ IDOrganization = IDOrganization&#39;} ρ_{IDOrganization&#39;/IDOrganization}(v_1))</code></pre>
+<p><code>r</code> is the desired result, that is, the set of
+organizations (IDs) that exclusively employ women.</p>
+
+</div>
+<div class="cont-seplang"></div>
+<div class="cont-lang-it">
+<h4 class="lang-label">Italiano</h4>
+<h3 class="content-title">Algebra relazionale: self-join + sottrazione
+insiemistica</h3>
+<p>Negli esercizi di Algebra relazionale, può capitare che vengano fatte
+richieste del tipo “individua il minimo/massimo dei valori per un
+attributo di tabella”, o di altra natura ma riconducibili a
+queste.<br />
+Questi esercizi sono risolvibili sfruttando un “self-join” seguito da
+una “differenza insiemistica”.<br />
+Nel documento viene spiegato qual’è il ragionamento logico che
+giustifica l’uso di queste due operazioni.</p>
+<p>Si da per scontato che il lettore conosca bene l’algebra
+relazionale.<br />
+Si consideri la seguente tabella <code>T</code> d’esempio, definita come
+<code>T(A)</code> e con tuple:</p>
+<pre><code>+===+
+| A |
++===+
+| 1 |
+| 2 |
+| 3 |
+| 4 |
++---+</code></pre>
+<p>La richiesta è: “Trova il valore minimo per A nella tabella
+<code>T</code>”.<br />
+Una semplice occhiata suggerisce che tale valore è 1, ma come si giunge
+a questo risultato con l’algebra relazionale?</p>
+<p>Per risolvere questo tipo di problema, occorre aver presente i valori
+per A, come fossero un insieme <code>S = {1, 2, 3, 4}</code>, e quindi
+considerarne il prodotto cartesiano <code>SxS</code>:</p>
+<pre><code>SxS = {
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (2, 1),
+    (2, 2),
+    (2, 3),
+    (2, 4),
+    (3, 1),
+    (3, 2),
+    (3, 3),
+    (3, 4),
+    (4, 1),
+    (4, 2),
+    (4, 3),
+    (4, 4)
+}</code></pre>
+<p>Ora, si immagini di filtrare queste coppie rispetto alla condizione
+<code>LT &gt; RT</code> (termine sinistro &gt; termine destro); Il
+risultato di tale filtraggio è la seguente relazione
+<code>R_&gt;</code>:</p>
+<pre><code>R_&gt; = {
+    (2, 1),
+    (3, 1),
+    (3, 2),
+    (4, 1),
+    (4, 2),
+    (4, 3),
+}</code></pre>
+<p>Ponendo l’attenzione sui diversi <code>LT</code> di
+<code>R_&gt;</code>, si constata che non esiste alcuna coppia per cui
+<code>LT = 1</code>.<br />
+Il <em>valore di interessa</em> manca, ma è questo il punto, grazie a
+ciò, sarà possibile usare la sottrazione insiemistica.<br />
+Sia <code>K = {2, 3, 4}</code>, ovvero, l’insieme degli <code>LT</code>
+di <code>R_&gt;</code>; Rimane solo da sottrarre <code>K</code> da
+<code>S</code>:</p>
+<pre><code>S - K = {1, 2, 3, 4} - {2, 3, 4} = {1}</code></pre>
+<p>Toh, è stato trovato il minimo!</p>
+<p>In algebra relazionale, questo si traduce in un self-join (=theta
+join di <code>T</code> con una sua copia rinominata) di <code>T</code>,
+sottratto (differenza insiemistica) da <code>T</code> stesso.<br />
+Per soddisfare la richiesta, si utilizzano le seguenti operazioni:</p>
+<pre><code>K := π_{A}(T ⋈_{A &gt; A&#39;} ρ_{A&#39;/A}(T));
+r :=  T - K</code></pre>
+<p>Si noti che la notazione <code>_{...}</code> indica i contenuti (tra
+parentesi graffe) del pedice del particolare operatore.<br />
+Ad esempio, l’operazione <code>ρ_{A'/A}(T)</code> si legge come
+“rinomina l’attributo A di T in A’”, “A’/A” si trova nel pedice di
+<code>ρ</code> e <code>T</code> è fra parentesi tonde.</p>
+<p>Qui <code>r</code> è il risultato desiderato.<br />
+Quando si ha un ordine tra valori (la cosiddetta “relazione d’ordine”),
+un self-join con una condizione del tipo <code>LT op RT</code>, seguito
+da una sottrazione insiemistica, di solito sono sufficienti per
+risolvere questa particulare classe di problemi .<br />
+L’operatore di comparazione <code>op</code> dipende strettamente dal
+risultato che si vuole ottenere.</p>
+<p>Il self-join è quindi, l’equivalente relazionale del comparare tutti
+i singoli valori dell’insieme <code>S</code> tra loro; È ovvio che se si
+chiedono i valori maggiori, NON SI AVRÀ MAI il minimo in
+<code>LT</code>, perchè appunto, è l’unico valore che NON È MAGGIORE
+degli altri; Allo stesso modo, chiedendo tutti i valori minori, NON SI
+AVRÀ MAI il massimo in <code>LT</code>, perchè NON È MINORE degli
+altri.</p>
+<p>Questo permette di capire perchè serve prima il self-join e poi la
+sottrazione: Il self-join ha lo scopo di accumulare i <em>valori
+inutili</em> come <code>LT</code>, cosicchè dopo, sia possibile
+sottrarli dalla <em>tabella che fa da intero</em>, per ottenere i
+<em>valori di interesse</em> come risultato.</p>
+<p>Nel caso dell’individuazione del minimo/massimo, il ragionamento si
+riassume in:</p>
+<ul>
+<li>Per individuare il minimo, prima usare il self-join con condizione
+<code>LT &gt; RT</code>, quindi sottrarre il risultato dall’insieme
+degli <code>LT</code>;</li>
+<li>Per individuare il massimo, prima usare il self-join con condizione
+<code>LT &lt; RT</code>, quindi sottrarre il risultato dall’insieme
+degli <code>LT</code>;</li>
+</ul>
+<h4>Problema più complesso risolvibile mediante self-join +
+sottrazione</h4>
+<p>Qui segue la discussione di un problema più complesso, che può essere
+ricondotto al precedente ragionamento di risoluzione.<br />
+Si supponga che la base di dati presenti le seguenti tabelle con
+vincoli:</p>
+<pre><code>Azienda(ID, Nome);
+Persona(ID, Nome, Sesso);
+Impiegato(IDAzienda, IDPersona);
+
+ID è chiave primaria per Azienda;
+ID è chiave primaria per Persona;
+La tupla di attributi (IDAzienda, IDPersona) è chiave primaria per Impiegato;
+IDPersona fa riferimento a Persona(ID);
+IDAzienda fa riferimento a Azienda(ID);</code></pre>
+<p>Viene quindi richiesto di “Restituire le aziende che impiegano solo
+donne”.<br />
+Questo significa che vanno escluse tutte le aziende che hanno una forza
+lavoro mista.<br />
+Sebbene non si tratti di un minimo/massimo, il ragionamento è lo stesso:
+Occorre dapprima usare un self-join, per prelevare l’insieme delle
+aziende con impiegati misti (ergo, le <em>tuple inutili</em>).<br />
+Per fare ciò, è possibile creare una vista <code>v_1</code>, definita
+come:</p>
+<pre><code>v_1 = π_{IDAzienda, Sesso}(Impiegato ⋈_{IDPersona = ID} Persona);</code></pre>
+<p>Con questa vista, abbiamo nella stessa tabella sia l’ID dell’azienda
+che il sesso dell’impiegato.<br />
+Ora tocca al self-join: Gli impiegati (soltanto i loro sessi, a dire il
+vero), appartenenti alla stessa azienda, devono essere combinati l’uno
+con l’altro, allo scopo di individuare le tuple, i cui due impiegati
+hanno sessi opposti.<br />
+Ciò funziona perchè, quando un impiegato viene combinato con i suoi
+colleghi, ed essi sono tutti dello stesso sesso, non accadrà mai che in
+una tupla, si avrà che il primo impiegato ha un sesso opposto rispetto
+al secondo.</p>
+<p>Per ottenere questo risultato, occorre un self-join di
+<code>v_1</code>:</p>
+<pre><code>v_2 = π_{IDAzienda}(v_1 ⋈_{Sesso ≠ Sesso&#39; ^ IDAzienda = IDAzienda&#39;} ρ_{IDAzienda&#39;,Sesso&#39;/IDAzienda,Sesso}(v_1))</code></pre>
+<p><code>v_2</code> raccoglie tutti gli ID di aziende che impiegano ambo
+i sessi, ovvero, le <em>tuple inutili</em>.<br />
+Ora si passa alla sottrazione insiemistica di <code>v_2</code> da
+<code>v_1</code>, di modo da ottenere una vista <code>v_3</code>,
+contenente gli ID di aziende che hanno impiegati di un solo sesso:</p>
+<pre><code>v_3 = π_{IDAzienda}(v_1) - v_2</code></pre>
+<p>Non è ancora finita però, la richiesta vuole le aziende che impiegano
+soltanto donne.<br />
+Per superare quest’ostacolo, è sufficiente usare un theta join tra
+<code>v_3</code> e <code>v_1</code>, di modo da escludere gli impiegati
+di sesso maschile.<br />
+L’operazione finale è quindi la seguente:</p>
+<pre><code>r = π_{IDAzienda}(v_3 ⋈ {Sesso ≠ &#39;M&#39; ^ IDAzienda = IDAzienda&#39;} ρ_{IDAzienda&#39;/IDAzienda}(v_1))</code></pre>
+<p><code>r</code> è il risultato desiderato, ovvero, l’insieme degli ID
+di aziende che impiegano solo donne.</p>
+
+</div>
+         </div>
+    </div>
+
+    <div id="footer">
+        <div id="footer-container">
+        Made with <a href="https://github.com/elluisian/sitextrens">Sitextrens</a>, by <a href="https://github.com/elluisian">elluisian</a>.
+        </div>
+    </div>
+</html>

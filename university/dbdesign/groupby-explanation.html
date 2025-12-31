@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8"/>
+
+
+        <meta property="og:title" content="Le attività di Antonio Daniele"/>
+        <meta property="og:image" content="//assets/images/icona-antoniodaniele-attivita.png"/>
+        <meta property="og:description" content="Le attività di Antonio Daniele"/>
+        <meta property="og:url" content="//university/dbdesign/groupby-explanation.html"/>
+        <link rel="icon" type="image/x-icon" sizes="32x32" href="../../assets/images/favicon.ico">
+        <link rel="shortcut icon" href="../../assets/images/favicon.ico" type="image/x-icon">
+
+
+        <title>Le attività di Antonio Daniele - 'GROUP BY' explanation</title>
+        <link rel="stylesheet" href="../../assets/css/structure.css"/>
+        <link rel="stylesheet" href="../../assets/css/default-theme.css" title="Default theme" />
+        <link rel="alternate stylesheet" href="../../assets/css/old-theme.css" title="Old theme"/>
+        <link rel="alternate stylesheet" href="../../assets/css/dark-theme.css" title="Dark theme"/>
+
+        <script src="../../assets/js/utils-logic.js"></script>
+        <script src="../../assets/js/theme-logic.js"></script>
+        <script src="../../assets/js/multilang-logic.js"></script>
+        <script src="../../assets/js/entrypoint-logic.js"></script>
+    </head>
+    <body>
+
+    <div id="header">
+        <div id="headerpextra">
+        <h1 id="title">Le attività di Antonio Daniele</h1>
+
+        
+
+<ul id="extra-options">
+     <li><a href="javascript:;" id="lang-button">
+          <img alt="Italian flag" class="cont-lang-en" src="../../assets/images/italy-flag.png"/>
+          <img alt="Union jack flag" class="cont-lang-it" src="../../assets/images/uk-flag.png"/>
+     </a></li>
+     <li><a href="javascript:;" id="theme-button">&nbsp;</a></li>
+</ul>
+        <div style="clear: both"></div>
+        </div>
+
+        <ul id="menubar">
+            </li>
+<li><a href="../../index.html" class="menubtn">HOME</a>
+</li>
+<li><a href="../../about.html" class="menubtn">About</a>
+</li>
+<li><a href="../../projects.html" class="menubtn">Projects</a>
+</li>
+<li><a href="../../university.html" class="menubtn">University</a>
+</li>
+<li><a href="../../sitemap.html" class="menubtn">Sitemap</a>
+        </ul>
+    </div>
+
+    <div class="cont-coll">
+         <div id="breadcrumb-bar">
+         <span id="breadcrumb-bar-back"><a href="../dbdesign.html">..</a></span>
+<span id="breadcrumb-bar-path"><a href="../../index.html"><span class="cont-lang-en">HOME</span><span class="lang-separator"> - </span><span class="cont-lang-it">Indice</span></a>/<a href="../../university.html"><span class="cont-lang-en">University</span><span class="lang-separator"> - </span><span class="cont-lang-it">Università</span></a>/<a href="../dbdesign.html"><span class="cont-lang-en">Databases</span><span class="lang-separator"> - </span><span class="cont-lang-it">Basi di dati</span></a>/<a href="groupby-explanation.html"><span class="cont-lang-en">'GROUP BY' explanation</span><span class="lang-separator"> - </span><span class="cont-lang-it">Spiegazione di 'GROUP BY'</span></a></span>
+<div style="clear: both"></div>
+         </div>
+
+         <div class="content">
+         <div class="cont-lang-en">
+<h4 class="lang-label">English</h4>
+<h3 class="content-title">‘GROUP BY’ Explanation</h3>
+<p>In SQL, the <code>GROUP BY</code> clause allows to perform
+calculations on the tuples of a table, based on one or more specified
+attributes’ values.<br />
+Basically, starting from the source table, many virtual tables are
+created according to the <strong>distinct values</strong> for a given
+set of attributes.<br />
+The aggregate functions (e.g. <code>COUNT</code>, <code>AVG</code>,
+<code>MAX</code>, etc.) are then used on virtual tables, in order to get
+the desired results.</p>
+<p>The <code>HAVING</code> clause may be used ONLY when paired with
+<code>GROUP BY</code>, as it allows to filter <em>in respect to the used
+aggregate operation</em>.</p>
+<p>A graphical example is worth a thousand words.<br />
+Suppose the existence of the following example table <code>T</code>:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 1 | 2 |
+| 1 | 3 |
+| 2 | 3 |
+| 2 | 1 |
+| 3 | 0 |
++-------+</code></pre>
+<p>Therefore, it is asked to “Get the number of DISTINCT values of A”;
+In short, the number of occurrences for the ‘unique’ values associated
+to the A attribute. At a quick glance, it is clear that for the
+attribute A, there exist two occurrences for 1, two occurrences for 2
+and one for 3.</p>
+<p>This kind of problem is easily solvable by using
+<code>GROUP BY</code>.<br />
+The SQL query that solves this, is the following:</p>
+<pre><code>SELECT A, COUNT(A) AS n FROM T GROUP BY A;</code></pre>
+<p>Please note that were selected both, A and its tally, renamed as ‘n’,
+and the whole thing is <strong>grouped by A</strong>.<br />
+To understand how this is calculated, one might imagine “virtually
+dividing” <code>T</code> into as many virtual tables as there are unique
+values of A; In this case, having three unique values (1, 2, and 3),
+makes three virtual tables.</p>
+<p>Based on this, there will be:</p>
+<ul>
+<li>T_1, which contains all tuples in which A = 1;</li>
+<li>T_2, which contains all tuples in which A = 2;</li>
+<li>T_3, which contains all tuples in which A = 3;</li>
+</ul>
+<p>Graphically, these are represented as:</p>
+<ul>
+<li><p>Table T_1:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 1 | 2 |
+| 1 | 3 |
++-------+</code></pre></li>
+<li><p>Table T_2:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 2 | 3 |
+| 2 | 1 |
++-------+</code></pre></li>
+<li><p>Table T_3:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 3 | 0 |
++-------+</code></pre></li>
+</ul>
+<p>After that, the particular aggregate function is executed on each
+table’s tuples; In this case, <code>COUNT(A)</code>.<br />
+Needless to say, for both T_1 and T_2, <code>COUNT(A)</code> is 2, for
+T_3 <code>COUNT(A)</code> is 1.<br />
+Wow, they are the same values detected with a quick glance!</p>
+<p>All that remains is to take these values and associate them with the
+particular A’s ‘unique’ value (in the SELECT clause, first A, then n is
+queried).<br />
+The results are:</p>
+<pre><code>+---+---+
+| A | n |
++---+---+
+| 1 | 2 |
+| 1 | 2 |
+| 2 | 1 |
++---+---+</code></pre>
+<p>It is necessary to gather experience, in order to understand when to
+use <code>GROUP BY</code> and <code>HAVING</code>.<br />
+In general, if there’s necessity to count, to calculate the mean, to
+detect the minimum/maximum and similar, it’s 90% <code>GROUP BY</code>
+material.<br />
+Of course it’s not always like that, usual mistakes in exam tests
+include reading “for every element” and jump to the conclusion that a
+<code>GROUP BY</code> clause must be used; That’s simply wrong; It
+highly depends on the Database schema one’s dealing with.</p>
+<h4>Usage of HAVING</h4>
+<p>Here follows the usage of the clause <code>HAVING</code>.<br />
+To the previous request, a further condition to ignore all values of A
+that have less than two correspondences, is added.<br />
+To do this, it is sufficient to alter the query this way:</p>
+<pre><code>SELECT A, COUNT(A) AS n FROM T GROUP BY A HAVING n &lt; 2;</code></pre>
+<p>As a consequence, graphically, the result is:</p>
+<pre><code>+---+---+
+| A | n |
++---+---+
+| 1 | 2 |
+| 2 | 2 |
++---+---+</code></pre>
+<h4>Usage of multiple attributes with GROUP BY</h4>
+<p>It is important to note that in the first section of this page, it
+has been said explicitly that <code>GROUP BY</code>:</p>
+<p>“[…] allows to perform calculations on the tuples of a table, based
+on one or more specified attributes’ values. […]”</p>
+<p>It is in fact possible to specifiy different attributes; The
+aggregation function will produce different results, accordingly.<br />
+Considering the query:</p>
+<pre><code>SELECT A, COUNT(A) AS n FROM T GROUP BY A, B;</code></pre>
+<p>If executed, the result will be:</p>
+<pre><code>+---+---+
+| A | n |
++---+---+
+| 1 | 1 |
+| 1 | 1 |
+| 2 | 1 |
+| 2 | 1 |
+| 3 | 1 |
++---+---+</code></pre>
+<p>What’s the criteria this time?<br />
+Always the same, except it was not told, up to now, that
+<code>GROUP BY</code> “makes virtual tables” based on a tuple of
+attributes; This means that specifying a single attribute, is like
+specifying a tuple containing only a single attribute.<br />
+Considering the previous examples, <code>GROUP BY A</code> makes virtual
+tables in respect to the tuple <code>(A)</code>, and
+<code>GROUP BY A, B</code>, makes them in respect to
+<code>(A, B)</code>.</p>
+<p>Looking at the table <code>T</code>, one may notice that, if during
+the virtual tables definition, a value is considered depending on
+<code>(A, B)</code>, then it will be a pair, in which the left term is a
+value for A, and the right term is a value for B.<br />
+In this scenario, the “distinct tuples” are:</p>
+<pre><code>(1, 2)
+(1, 3)
+(2, 3)
+(2, 1)
+(3, 0)</code></pre>
+<p>That is, EVERY SINGLE ONE.<br />
+This explains the result; Fittingly, not being repeated tuples, each one
+of them counts as 1.<br />
+Note that even though <code>COUNT</code> operates only on A, it’s as if
+it counts the pair A and B, since <code>A</code> is within the tuple
+<code>(A, B)</code>, which is considered a “whole”.</p>
+<p>This can be checked by adding a duplicated tuple, for example
+<code>(1, 2)</code> to <code>T</code>:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 1 | 2 |
+| 1 | 3 |
+| 2 | 3 |
+| 2 | 1 |
+| 3 | 0 |
+| 1 | 2 |
++-------+</code></pre>
+<p>By using the previous query, the result is:</p>
+<pre><code>+---+---+
+| A | n |
++---+---+
+| 1 | 2 |
+| 1 | 1 |
+| 2 | 1 |
+| 2 | 1 |
+| 3 | 1 |
++---+---+</code></pre>
+<p>By selecting B too, the query becomes:</p>
+<pre><code>SELECT A, B, COUNT(A) as n from T GROUP BY A, B;</code></pre>
+<p>It returns:</p>
+<pre><code>+---+---+---+
+| A | B | n |
++---+---+---+
+| 1 | 2 | 2 |
+| 1 | 3 | 1 |
+| 2 | 1 | 1 |
+| 2 | 3 | 1 |
+| 3 | 0 | 1 |
++---+---+---+</code></pre>
+<h4>SQL code for MySQL/SQLite3</h4>
+<p>One may test what has been discussed up to now, by using the
+following SQL instructions.<br />
+In MySQL/MariaDB, invoke the command-line client and use the
+commands:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">DATABASE</span> groupbytestdb;</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">USE</span> <span class="kw">DATABASE</span> groupbytestdb;</span></code></pre></div>
+<p>With this code, one may make a test database named
+‘groupbytestdb’.<br />
+For SQLite3, it is sufficient to invoke the program, even without
+arguments.</p>
+<p>Regardless of the particular DBMS, it is now possible to make the
+table <code>T</code> and insert example tuples:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> T (</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    A <span class="dt">INTEGER</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    B <span class="dt">INTEGER</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="dv">2</span>);</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="dv">3</span>);</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="dv">3</span>);</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="dv">1</span>);</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="dv">0</span>);</span></code></pre></div>
+<p>To test multi-attributes <code>GROUP BY</code> too, add a duplicated
+tuple:</p>
+<pre><code>INSERT INTO T (A, B) VALUES (1, 2);</code></pre>
+
+</div>
+<div class="cont-seplang"></div>
+<div class="cont-lang-it">
+<h4 class="lang-label">Italiano</h4>
+<h3 class="content-title">Spiegazione di ‘GROUP BY’</h3>
+<p>In SQL, La clausola <code>GROUP BY</code> consente di eseguire
+calcoli sulle tuple di una tabella, in base ai valori di uno o più
+attributi specificati.<br />
+Il funzionamento è più o meno il seguente: Partendo dalla tabella
+d’origine, vengono create tante tabelle virtuali quanti sono i
+<strong>valori distinti</strong> di un dato insieme di attributi.<br />
+Su queste tabelle virtuali, vengono poi eseguiti le funzioni aggregate
+(ad es. <code>COUNT</code>, <code>AVG</code>, <code>MAX</code>, ecc.),
+per ottenere i risultati desiderati.</p>
+<p>La clausola <code>HAVING</code> può essere usata SOLO in accoppiata
+con <code>GROUP BY</code>, e consente di filtrare <em>rispetto
+all’operazione d’aggregazione utilizzata</em>.</p>
+<p>Un esempio grafico vale più di mille parole.<br />
+Si ponga di avere la seguente tabella <code>T</code> d’esempio:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 1 | 2 |
+| 1 | 3 |
+| 2 | 3 |
+| 2 | 1 |
+| 3 | 0 |
++-------+</code></pre>
+<p>Ergo, venga richiesto di “Ottenere il numero di valori DISTINTI di
+A”; In parole povere, desideriamo ottenere il numero di occorrenze dei
+valori ‘unici’ dell’attributo A.<br />
+Ad uno sguardo veloce, si capisce che per l’attributo A, si hanno due
+occorrenze del valore 1, due per il valore 2 e una sola per il valore
+3.</p>
+<p>Questo tipo di problema è facilmente risolvibile sfruttando
+<code>GROUP BY</code>.<br />
+La query SQL che lo risolve è la seguente:</p>
+<pre><code>SELECT A, COUNT(A) AS n FROM T GROUP BY A;</code></pre>
+<p>Si noti che è stato selezionato A e il suo conteggio rinominato in
+‘n’, il tutto, <strong>raggruppato rispetto ad A</strong>.<br />
+Per comprendere come viene calcolato il risultato, occorre immaginare di
+“suddividere virtualmente” <code>T</code>, in tante tabelle virtuali
+quanti sono i valori unici di A; In questo caso, sussistono tre valori
+unici (1, 2 e 3), ergo, tre tabelle virtuali.</p>
+<p>In base a ciò, si avrà:</p>
+<ul>
+<li>T_1, che conterrà tutte le tuple per cui A = 1;</li>
+<li>T_2, che conterrà tutte le tuple per cui A = 2;</li>
+<li>T_3, che conterrà tutte le tuple per cui A = 3;</li>
+</ul>
+<p>Graficamente, queste vengono rappresentate così:</p>
+<ul>
+<li><p>Tabella T_1:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 1 | 2 |
+| 1 | 3 |
++-------+</code></pre></li>
+<li><p>Tabella T_2:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 2 | 3 |
+| 2 | 1 |
++-------+</code></pre></li>
+<li><p>Tabella T_3:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 3 | 0 |
++-------+</code></pre></li>
+</ul>
+<p>Ottenute le tabelle, viene eseguita la particolare funzione aggregata
+sulle tuple di ciascuna; In questo caso, <code>COUNT(A)</code>.<br />
+Inutile dire che per T_1 e T_2, <code>COUNT(A)</code> è 2, per T_3
+<code>COUNT(A)</code> è 1.<br />
+Ma guarda, sono gli stessi valori ottenibili col semplice sguardo!</p>
+<p>Ora rimane da prendere questi valori, ed associarli ognuno con il
+particolare valore di A (nella SELECT viene chiesto prima A, poi
+n).<br />
+Il risultato sarà:</p>
+<pre><code>+---+---+
+| A | n |
++---+---+
+| 1 | 2 |
+| 1 | 2 |
+| 2 | 1 |
++---+---+</code></pre>
+<p>Occorre fare esperienza, per capire quando usare
+<code>GROUP BY</code> e <code>HAVING</code>.<br />
+In generale, se occorre contare, calcolare lla media, individuare il
+massimo/minimo e simili, al 90% occorre <code>GROUP BY</code>.<br />
+Ovviamente non è sempre così, errori comuni nelle prove d’esame
+includono il leggere “per ogni elemento” e partire in quarta nel credere
+che occorra utilizzare <code>GROUP BY</code>; Niente di più sbagliato;
+Dipende molto dallo schema di Database con cui si ha a che fare.</p>
+<h4>Uso di HAVING</h4>
+<p>Qui segue un uso della clausola <code>HAVING</code>.<br />
+Alla richiesta precedente, viene aggiunta la condizione di ignorare
+tutti i valori di A che abbiano meno di due corrispondenze.<br />
+Per fare ciò, basta alterare la query in questo modo:</p>
+<pre><code>SELECT A, COUNT(A) AS n FROM T GROUP BY A HAVING n &lt; 2;</code></pre>
+<p>Di conseguenza, si avrà, graficamente:</p>
+<pre><code>+---+---+
+| A | n |
++---+---+
+| 1 | 2 |
+| 2 | 2 |
++---+---+</code></pre>
+<h4>Uso di molteplici attributi in GROUP BY</h4>
+<p>È importante notare che nella prima sezione di questa pagina, viene
+detto esplicitamente che <code>GROUP BY</code>:</p>
+<p>“[…] consente di eseguire calcoli sulle tuple di una tabella, in base
+ai valori di uno o più attributi specificati. […]”</p>
+<p>È infatti possibile specificare molteplici attributi; La funzione di
+aggregazione produrrà risultati diversi, come conseguenza.<br />
+Si consideri la query:</p>
+<pre><code>SELECT A, COUNT(A) AS n FROM T GROUP BY A, B;</code></pre>
+<p>Se eseguita, si otterrà il risultato:</p>
+<pre><code>+---+---+
+| A | n |
++---+---+
+| 1 | 1 |
+| 1 | 1 |
+| 2 | 1 |
+| 2 | 1 |
+| 3 | 1 |
++---+---+</code></pre>
+<p>Qual’è il criterio questa volta?<br />
+Sempre lo stesso, solo che non è stato fin’ora, che
+<code>GROUP BY</code> “crea le tabelle virtuali” in base ad una tupla di
+attributi; Questo significa che lo specificare un singolo attributo, è
+come specificare una tupla contenente un singolo attributo.<br />
+Considerando gli esempi precedenti, <code>GROUP BY A</code>, crea
+tabelle virtuali rispetto alla tupla <code>(A)</code>, e
+<code>GROUP BY A, B</code>, le crea in base a <code>(A, B)</code>.</p>
+<p>Rivedendo la tabella <code>T</code>, si constata che, se durante la
+suddivisione in tabelle virtuali, un valore è considerato in base a
+<code>(A, B)</code>, allora esso sarà una coppia di il cui termine di
+sinistra è un valore di A, mentre il termine destro è un valore di
+B.<br />
+In questo scenario, le “tuple distinte” sono:</p>
+<pre><code>(1, 2)
+(1, 3)
+(2, 3)
+(2, 1)
+(3, 0)</code></pre>
+<p>Ovvero, TUTTE.<br />
+Questo spiega il risultato; Giustamente, non essendoci tuple ripetute,
+ognuna di esse conta come singola occorrenza.<br />
+Si noti che anche se <code>COUNT</code> opera solo su A, è come se si
+conteggiasse la coppia e non il singolo attributo, questo perchè È LA
+COPPIA di attributi (A, B) ad essere considerata un’“unità”.</p>
+<p>Questo lo si può constatare aggiungendo alla tabella <code>T</code>,
+una tupla duplicata, ad esempio <code>(1, 2)</code>:</p>
+<pre><code>+=======+
+| A | B |
++=======+
+| 1 | 2 |
+| 1 | 3 |
+| 2 | 3 |
+| 2 | 1 |
+| 3 | 0 |
+| 1 | 2 |
++-------+</code></pre>
+<p>Sfruttando la query precedente, si ottiene:</p>
+<pre><code>+---+---+
+| A | n |
++---+---+
+| 1 | 2 |
+| 1 | 1 |
+| 2 | 1 |
+| 2 | 1 |
+| 3 | 1 |
++---+---+</code></pre>
+<p>Includendo anche B nella query:</p>
+<pre><code>SELECT A, B, COUNT(A) as n from T GROUP BY A, B;</code></pre>
+<p>Si otterrà il risultato:</p>
+<pre><code>+---+---+---+
+| A | B | n |
++---+---+---+
+| 1 | 2 | 2 |
+| 1 | 3 | 1 |
+| 2 | 1 | 1 |
+| 2 | 3 | 1 |
+| 3 | 0 | 1 |
++---+---+---+</code></pre>
+<h4>Codice SQL per MySQL/SQLite3</h4>
+<p>È possibile testare quanto discusso fin’ora, mediante le seguenti
+istruzioni SQL.<br />
+In MySQL/MariaDB, invocare il client da riga di comando ed utilizzare i
+comandi:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">DATABASE</span> groupbytestdb;</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">USE</span> <span class="kw">DATABASE</span> groupbytestdb;</span></code></pre></div>
+<p>Per creare un database di test denominato ‘groupbytestdb’.<br />
+Per SQLite3, è sufficiente invocare il programma, anche senza
+argomenti.</p>
+<p>Prescindendo dal particolare DBMS, ora è possibile creare la tabella
+<code>T</code> ed inserire tuple d’esempio:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> T (</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    A <span class="dt">INTEGER</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    B <span class="dt">INTEGER</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="dv">2</span>);</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="dv">3</span>);</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="dv">3</span>);</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="dv">1</span>);</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> T (A, B) <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="dv">0</span>);</span></code></pre></div>
+<p>Per testare <code>GROUP BY</code> con molteplici attributi,
+aggiungere una tupla duplicata:</p>
+<pre><code>INSERT INTO T (A, B) VALUES (1, 2);</code></pre>
+
+</div>
+         </div>
+    </div>
+
+    <div id="footer">
+        <div id="footer-container">
+        Made with <a href="https://github.com/elluisian/sitextrens">Sitextrens</a>, by <a href="https://github.com/elluisian">elluisian</a>.
+        </div>
+    </div>
+</html>

@@ -1,0 +1,53 @@
+body {
+    background-color: #B4D3E7;
+}
+
+#header {
+    background-color: #61A8CD;
+}
+
+#title {
+    text-shadow: 3px 3px 3px #2D6C8E;
+    color: #D0CC09;
+}
+
+a.menubtn {
+    color: #FFAA76;
+    text-shadow: 2px 2px 2px #2D6C8E;
+}
+
+a.menubtn:hover {
+    color: #CE4E00;
+    text-shadow: 2px 2px 2px #2D6C8E;
+}
+
+a.menubtn:active {
+    color: #903700;
+    text-shadow: 2px 2px 2px #2D6C8E;
+}
+
+.cont-coll {
+    background-color: #FAFDFF;
+}
+
+.content {
+    color: #000000;
+}
+
+#footer {
+    background-color: #5EA7CC;
+    color: #215068;
+    text-shadow: 2px 2px 2px #2D6C8E;
+}
+
+#footer-container > a {
+    color: #FFAA76;
+}
+
+#footer-container > a:hover {
+    color: #CE4E00;
+}
+
+#footer-container > a:active {
+    color: #903700;
+}
