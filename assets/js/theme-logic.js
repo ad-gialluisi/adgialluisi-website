@@ -6,6 +6,11 @@ var THEME_NONE = 3;
 
 var thm_pref = 0;
 var style_list = [];
+var styles_structure = null;
+var styles_default = null;
+var styles_old = null;
+var styles_dark = null;
+
 var themech_btn= null;
 
 var theme_colors = ["#B4D3E7", "#4B787C", "#004D75", "white"];

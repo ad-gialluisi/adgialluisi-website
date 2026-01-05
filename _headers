@@ -8,6 +8,4 @@ Referrer-Policy: no-referrer
 Permissions-Policy: geolocation=(self), microphone=(), camera=(), fullscreen=(self)
 Expect-CT: max-age=86400, enforce
 Access-Control-Allow-Origin: https://adgialluisi-website.pages.dev
-Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
-Pragma: no-cache
-Expires: 0
+Cache-Control: private, max-age=1296000

@@ -1,4 +1,13 @@
 .aboutme-image {
-    width: 50%;
+    width: 90%;
     height: auto;
+}
+
+
+figure:has(> .aboutme-image) {
+    text-align: center;
+}
+
+figure:has(> .aboutme-image) > figcaption {
+    text-align: right;
 }
